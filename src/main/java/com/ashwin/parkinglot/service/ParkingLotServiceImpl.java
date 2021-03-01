@@ -37,10 +37,10 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         try {
             parkValue = Optional.of(parkingLotDao.parkCar(vehicle));
             if (parkValue.get() == Constants.NOT_AVAILABLE) {
-                System.out.println(ParkingError.PARKING_NOT_EXIST_ERROR);
+                System.out.println(ParkingError.PARKING_NOT_EXIST_ERROR.getMessage());
             } else if (parkValue.get() == Constants.VEHICLE_ALREADY_EXIST) {
                 System.out.println("Sorry, vehicle is already parked.");
-                System.out.println(ParkingError.PARKING_ALREADY_EXIST);
+                System.out.println(ParkingError.PARKING_ALREADY_EXIST.getMessage());
             } else {
                 System.out.println("Allocated slot number: " + parkValue.get());
             }
