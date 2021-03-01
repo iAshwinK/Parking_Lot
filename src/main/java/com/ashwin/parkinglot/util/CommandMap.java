@@ -17,9 +17,9 @@ public class CommandMap {
         commandConstantIdMap.put(CommandConstants.PARK, 2);
         commandConstantIdMap.put(CommandConstants.LEAVE, 1);
         commandConstantIdMap.put(CommandConstants.STATUS, 0);
-        commandConstantIdMap.put(CommandConstants.REG_NUMBER_FOR_CARS_WITH_COLOR, 1);
+        commandConstantIdMap.put(CommandConstants.REG_NUMBER_FOR_CARS_WITH_COLOUR, 1);
         commandConstantIdMap.put(CommandConstants.SLOT_NUMBER_FOR_REG_NUMBER, 1);
-        commandConstantIdMap.put(CommandConstants.SLOT_NUMBERS_FOR_CARS_WITH_COLOR, 1);
+        commandConstantIdMap.put(CommandConstants.SLOT_NUMBERS_FOR_CARS_WITH_COLOUR, 1);
     }
 
     public static Map<String, Integer> getCommandConstantIdMap() {

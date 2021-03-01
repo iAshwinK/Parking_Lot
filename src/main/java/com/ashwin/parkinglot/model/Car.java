@@ -5,8 +5,8 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 public class Car extends Vehicle {
-    public Car(String registrationNo, String color) {
-        super(registrationNo, color);
+    public Car(String registrationNo, String colour) {
+        super(registrationNo, colour);
     }
 
     @Override
