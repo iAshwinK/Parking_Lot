@@ -12,6 +12,7 @@ public enum ParkingError {
     private String message = "";
 
     private ParkingError(String s) {
+        this.message= s;
     }
 
     public String getMessage() {

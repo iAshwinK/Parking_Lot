@@ -40,7 +40,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
                 System.out.println(ParkingError.PARKING_NOT_EXIST_ERROR.getMessage());
             } else if (parkValue.get() == Constants.VEHICLE_ALREADY_EXIST) {
                 System.out.println("Sorry, vehicle is already parked.");
-                System.out.println(ParkingError.PARKING_ALREADY_EXIST.getMessage());
+                System.out.println(ParkingError.PARKING_ALREADY_EXIST.toString());
             } else {
                 System.out.println("Allocated slot number: " + parkValue.get());
             }
