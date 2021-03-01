@@ -1,6 +1,7 @@
 package com.ashwin.parkinglot.dao;
 
 import com.ashwin.parkinglot.model.Vehicle;
+import com.ashwin.parkinglot.model.strategy.LevelDistributionStrategy;
 import com.ashwin.parkinglot.model.strategy.NearestToEntryStrategy;
 import com.ashwin.parkinglot.model.strategy.ParkingLotStrategy;
 import com.ashwin.parkinglot.util.Constants;
@@ -14,15 +15,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ParkingLotDaoImpl<T extends Vehicle> implements ParkingLotDao<T> {
 
+    private AtomicInteger floor = new AtomicInteger(0);
     private AtomicInteger capacity = new AtomicInteger();
-    private AtomicInteger slotAvailability = new AtomicInteger();
+    private AtomicInteger slotAvLeailability = new AtomicInteger();
     private Map<Integer, Optional<T>> slotVehicleMap;
 
     private ParkingLotStrategy parkingLotStrategy;
+    private LevelDistributionStrategy levelDistributionStrategy;
 
     private static ParkingLotDaoImpl instance = null;
 
-    public static <T extends Vehicle> ParkingLotDaoImpl<T> getInstance(int capacity, ParkingLotStrategy parkingLotStrategy) {
+    public static <T extends Vehicle> ParkingLotDaoImpl<T> getInstance(int capacity, ParkingLotStrategy parkingLotStrategy,
+                                                                       LevelDistributionStrategy levelDistributionStrategy) {
         if (instance == null) {
             synchronized (ParkingLotDaoImpl.class) {
                 if (instance == null) {
@@ -56,6 +60,8 @@ public class ParkingLotDaoImpl<T extends Vehicle> implements ParkingLotDao<T> {
         if (slotAvailability.get() == 0) {
             return Constants.NOT_AVAILABLE;
         } else {
+            levelDistributionStrategy.getSlot()
+
             availableSlot = parkingLotStrategy.getSlot();
             if (slotVehicleMap.containsValue(Optional.of(vehicle)))
                 return Constants.VEHICLE_ALREADY_EXIST;
@@ -66,6 +72,16 @@ public class ParkingLotDaoImpl<T extends Vehicle> implements ParkingLotDao<T> {
         }
         return availableSlot;
     }
+
+    //Floor available  parked
+    //1     30         25
+    //2     30         0
+    //2     30         1
+    //..
+
+    //2     30         25
+    //1     30         26
+    //2     30         26
 
     @Override
     public boolean leaveCar(int slotNumber) {

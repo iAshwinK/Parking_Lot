@@ -5,6 +5,7 @@ import com.ashwin.parkinglot.dao.ParkingLotDaoImpl;
 import com.ashwin.parkinglot.exception.ParkingError;
 import com.ashwin.parkinglot.exception.ParkingLotException;
 import com.ashwin.parkinglot.model.Vehicle;
+import com.ashwin.parkinglot.model.strategy.LevelDistributionStrategy;
 import com.ashwin.parkinglot.model.strategy.NearestToEntryStrategy;
 import com.ashwin.parkinglot.model.strategy.ParkingLotStrategy;
 import com.ashwin.parkinglot.util.Constants;
@@ -22,15 +23,33 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     @Override
     public void createParkingLot(int capacity) throws ParkingLotException {
         if (parkingLotDao != null) {
+            //TOOD: create a new parking.
             throw new ParkingLotException(ParkingError.PARKING_ALREADY_EXIST.getMessage());
         }
         ParkingLotStrategy parkingLotStrategy = new NearestToEntryStrategy();
-        this.parkingLotDao = ParkingLotDaoImpl.getInstance(capacity, parkingLotStrategy);
+
+        LevelDistributionStrategy levelDistributionStrategy;
+        if(WEEKDAY) {
+             levelDistributionStrategy = new FillFirstLevelDistributionStrategy();
+        }
+        else{
+            levelDistributionStrategy = new EvenLevelDistributionStrategy();
+        }
+
+        this.parkingLotDao = ParkingLotDaoImpl.getInstance(capacity, parkingLotStrategy,levelDistributionStrategy);
         System.out.println("Created parking lot with " + capacity + " slots");
     }
 
     @Override
     public Optional<Integer> park(Vehicle vehicle) throws ParkingLotException {
+        LevelDistributionStrategy levelDistributionStrategy;
+        if(WEEKDAY) {
+            levelDistributionStrategy = new FillFirstLevelDistributionStrategy();
+        }
+        else{
+            levelDistributionStrategy = new EvenLevelDistributionStrategy();
+        }
+
         Optional<Integer> parkValue;
         readWriteLock.writeLock().lock();
         validateParkingLot();

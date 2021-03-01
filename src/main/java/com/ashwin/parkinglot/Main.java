@@ -7,6 +7,7 @@ import com.ashwin.parkinglot.service.ParkingLotServiceImpl;
 import com.ashwin.parkinglot.util.CommandConstants;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -48,7 +49,43 @@ public class Main {
                 }
 
             } //TODO: file approach
-            else {
+            //bin/parking_lot file_inputs.txt
+            if (args.length == 1) {
+                //read from file
+//                File inputFile = new File(args[0]);
+
+                ArrayList<String> commandList = new ArrayList<>();
+
+                try (BufferedReader br = new BufferedReader(new FileReader(args[0]))) {
+                    while (br.ready()) {
+                        commandList.add(br.readLine());
+                    }
+                } catch (FileNotFoundException fe) {
+                    System.out.println("File not found");
+                } catch (IOException e) {
+                    System.out.println("IO Exception occurred" + e.getMessage());
+                }
+                System.out.println("Command List size"+commandList.size());
+
+                for (String line : commandList) {
+                    line = line.trim();
+                    if (line.equalsIgnoreCase("exit")) {
+                        break;
+                    } else {
+                        if (serviceHandler.validateInput(line)) {
+                            try {
+                                serviceHandler.process(line.trim());
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+                        } else {
+                            printHelpCommands();
+                        }
+                    }
+                }
+
+
+            } else {
                 System.out.println("Invalid input string. Please enter: java -jar parking_lot.jar");
             }
         } catch (ParkingLotException e) {
@@ -62,6 +99,7 @@ public class Main {
             }
         }
     }
+
 
     private static void printHelpCommands() {
         StringBuilder stringBuilder = new StringBuilder("");

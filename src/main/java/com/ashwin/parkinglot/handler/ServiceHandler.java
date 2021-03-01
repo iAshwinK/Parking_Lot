@@ -19,6 +19,11 @@ public class ServiceHandler {
         try {
             String[] argArr = inputString.split(" ");
             int arg = CommandMap.getCommandConstantIdMap().get(argArr[0]);
+            // create_parking_lot 6 : happy scenario
+            // create_parking_lot 6 white : not valid
+
+            //TODO: as an improvement to following switch case
+            //return (argArr.length - 1) == arg;
 
             switch (argArr.length) {
                 case 1:
@@ -62,6 +67,8 @@ public class ServiceHandler {
                 break;
             case CommandConstants.LEAVE:
                 try {
+                    //TODO: to find out on which floor car exist
+                    //A-11
                     int slotNumber = Integer.parseInt(inputs[1]);
                     parkingLotService.leaveParking(slotNumber);
                 } catch (NumberFormatException e) {
